@@ -1,0 +1,21 @@
+<!-- inherit from base.html-->
+{% extends "task_manager_app/base_template.html" %}
+
+<!-- Replace block content in base_template.html -->
+{% block content %}
+
+<!-- Displays basic information in regards to the student -->
+<h1>Task: {{ task.title }}</h1>
+<div class="container-left">
+    <p><strong>Description: </strong> {{ task.description }}</p>
+    <p><strong>Due Date: </strong> {{ task.due_date }}</p>
+    <p><strong>Completion Stage: </strong> {{ task.completion_stage }}</p>
+    <p><strong>Assignee: </strong> {{ task.assignee }}</p>
+
+    <!-- Directs us to the Task List View-->
+    <a class="nav-link" aria-current="page" href="{% url 'task-list' %}">
+        <button class="btn">Task List</button>
+    </a>
+</div>
+    
+{% endblock %}

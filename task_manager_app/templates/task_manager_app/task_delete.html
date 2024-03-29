@@ -1,0 +1,32 @@
+{% extends "task_manager_app/base_template.html" %}
+
+{% block content %}
+
+    <style>
+
+        .btn-layout {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+    </style>
+
+    <p> Are you sure you want to delete task: "{{ task.title }}"?</p>
+
+    <div class="btn-layout">
+
+        <!-- Cancels deletion and reverts back to task-list -->
+        <a href="{% url 'task-list' %}">
+            <button class="btn">Cancel</button>
+        </a>
+
+        <!-- Deletes task from database -->
+        <form method="post">
+            {% csrf_token %}
+            <button class="btn" type"submit" value="Confirm">Confirm</button>
+        </form>
+
+    </div>
+
+{% endblock %}

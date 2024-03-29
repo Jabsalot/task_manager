@@ -1,0 +1,28 @@
+{% extends "task_manager_app/base_template.html" %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function() {
+            console.log("Document ready.");
+            var dueDateField = $("#id_due_date");
+            console.log("Due date field:", dueDateField);
+            if (dueDateField.length) {
+                console.log("Initializing datepicker.");
+                dueDateField.datepicker();
+            } else {
+                console.error("Due date field not found.");
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type"submit" value="Submit">Submit</button>
+    </form>
+{% endblock %}

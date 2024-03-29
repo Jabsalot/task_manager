@@ -1,0 +1,9 @@
+{% extends "task_manager_app/base_template.html" %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type"submit" value="Confirm">Update</button>
+    </form>
+{% endblock %}
