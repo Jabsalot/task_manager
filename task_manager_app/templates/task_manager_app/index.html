@@ -3,12 +3,92 @@
 
 <!-- Replace block content in base_template.html -->
 {% block content %}
+{% load static %}
 
-    <div class="container-middle">
-        <h1>Welcome to Tasky</h1>
-        <a class="nav-link" aria-current="page" href="{% url 'task-list' %}">
-            <button class="btn">Tasks</button>
-        </a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            height: calc(100vh - 86px); /* Adjusts container height (removes scroll bar) */
+        }
+
+        .pure-black-image {
+            flex-basis: 75%; /* Pure black image takes up 75% of the container width */
+            max-width: 75%; /* Limit the width of the image container */
+            position: relative; /* Relative positioning for text alignment */
+            overflow: hidden; /* Hide any content that overflows the container */
+            height: 100% /* Ensure container takes full height */
+        }
+
+        .task-manager-image {
+            flex-basis: 25%; /* Pure black image takes up 75% of the container width */
+            max-width: 25%; /* Limit the width of the image container */
+            position: relative; /* Relative positioning for text alignment */
+            overflow: hidden; /* Hide any content that overflows the container */
+            height: 100%; /* Ensure container takes full height */
+        }
+
+        img {
+            display: block; /* Ensure images don't have any space below them */
+            width: 100%; /* Make images responsive */
+            height: 100%; /* Make images responsive */
+            object-fit: cover;
+            /*max-height: calc(100vh - 100px);*/
+        }
+
+        .header {
+            position: absolute; /* Absolute positioning */
+            top: 30%; /* Position 30px from the top */
+            left: 50%; /* Position at 50% from the left */
+            transform: translateX(-50%); /* Center the text horizontally */
+            color: white; /* Text color */
+            font-size: 40px; /* Font size */
+            font-family: "Crimson Text", serif; /* Font family */
+            text-align: center; /* Center the text horizontally */
+        }
+
+        .paragraph {
+            position: absolute; /* Absolute positioning */
+            top: 40%; /* Position 50% from the top */
+            left: 50%; /* Position at 50% from the left */
+            transform: translate(-50%, -50%); /* Center the text horizontally and vertically */
+            color: white; /* Text color */
+            font-size: 22px; /* Font size */
+            font-family: "Crimson Text", serif; /* Font family */
+            text-align: center; /* Center the text horizontally */
+            width: 80%; /* Set width to 80% of the container */
+            height: auto; /* Allow the height to adjust based on content */
+            overflow: auto; /* Add overflow for large content */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="pure-black-image">
+            <img src="{% static 'images/pure_black.jpg' %}">
+            <div class="header">
+                Tasky Management
+            </div>
+            <div class="paragraph">
+                Streamline Your Tasks, Simplify Your Workflow, Master Your Management.
+            </div>
+        </div>
+        <div class="task-manager-image">
+            <img src="{% static 'images/project_planning.jpg' %}">
+        </div>
     </div>
-    
+
+</body>
+</html>
+
 {% endblock %}

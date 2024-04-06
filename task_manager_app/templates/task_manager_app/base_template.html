@@ -18,12 +18,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 20px;
+      padding: 20px 20px;
     }
     .navbar-brand {
       color: #f2f2f2;
       text-decoration: none;
-      font-size: 20px;
+      font-family: "Crimson Text", serif;
+      font-size: 30px
     }
     .navbar-links {
       display: flex;
@@ -33,6 +34,8 @@
       color: #f2f2f2;
       text-decoration: none;
       padding: 10px 20px;
+      font-family: "Crimson Text", serif;
+      font-size: 22px;
     }
     .navbar-link:hover {
       background-color: #ddd;
@@ -86,6 +89,7 @@
         <a class="navbar-brand" href="{% url 'index' %}">Tasky</a>
         <div class="navbar-links">
             <a class="navbar-link" href="{% url 'index' %}">Home</a>
+            <a class="navbar-link" href="{% url 'task-list' %}">Tasks</a>
             <a class="navbar-link" href="#">About</a>
             <a class="navbar-link" href="login.html" >Login</a>
         </div>
