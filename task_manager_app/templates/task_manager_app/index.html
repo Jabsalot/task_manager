@@ -21,17 +21,17 @@
         }
 
         .pure-black-image {
-            flex-basis: 75%; /* Pure black image takes up 75% of the container width */
-            max-width: 75%; /* Limit the width of the image container */
-            position: relative; /* Relative positioning for text alignment */
+            flex-basis: 75%; 
+            max-width: 75%; 
+            position: relative; 
             overflow: hidden; /* Hide any content that overflows the container */
             height: 100% /* Ensure container takes full height */
         }
 
         .task-manager-image {
-            flex-basis: 25%; /* Pure black image takes up 75% of the container width */
-            max-width: 25%; /* Limit the width of the image container */
-            position: relative; /* Relative positioning for text alignment */
+            flex-basis: 25%; 
+            max-width: 25%; 
+            position: relative; 
             overflow: hidden; /* Hide any content that overflows the container */
             height: 100%; /* Ensure container takes full height */
         }
@@ -45,34 +45,32 @@
         }
 
         .header {
-            position: absolute; /* Absolute positioning */
-            top: 30%; /* Position 30px from the top */
-            left: 50%; /* Position at 50% from the left */
+            position: absolute;
+            top: 30%; 
+            left: 50%; 
             transform: translateX(-50%); /* Center the text horizontally */
-            color: white; /* Text color */
-            font-size: 40px; /* Font size */
-            font-family: "Crimson Text", serif; /* Font family */
-            text-align: center; /* Center the text horizontally */
+            color: white;
+            font-size: 40px; 
+            font-family: "Crimson Text", serif;
+            text-align: center;
         }
 
         .paragraph {
-            position: absolute; /* Absolute positioning */
-            top: 40%; /* Position 50% from the top */
-            left: 50%; /* Position at 50% from the left */
+            position: absolute; 
+            top: 40%; 
+            left: 50%; 
             transform: translate(-50%, -50%); /* Center the text horizontally and vertically */
-            color: white; /* Text color */
-            font-size: 22px; /* Font size */
-            font-family: "Crimson Text", serif; /* Font family */
-            text-align: center; /* Center the text horizontally */
-            width: 80%; /* Set width to 80% of the container */
-            height: auto; /* Allow the height to adjust based on content */
-            overflow: auto; /* Add overflow for large content */
+            color: white; 
+            font-size: 22px; 
+            font-family: "Crimson Text", serif;
+            text-align: center; 
+            width: 80%; 
+            height: auto; 
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
         <div class="pure-black-image">
             <img src="{% static 'images/pure_black.jpg' %}">
@@ -87,7 +85,6 @@
             <img src="{% static 'images/project_planning.jpg' %}">
         </div>
     </div>
-
 </body>
 </html>
 
