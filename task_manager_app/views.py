@@ -1,10 +1,12 @@
+from .models import *
+from .forms import *
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from .models import *
-from .forms import *
+from django.contrib import messages
+from django.contrib.auth.models import Group
 
 ###########################################################
 #                    CLASS BASED MODELS                   #
@@ -48,10 +50,36 @@ class TaskCreateView(generic.CreateView):
 def index(request):
     return render(request, 'task_manager_app/index.html')
 
-''' LOGIN VIEWS '''
-def login(request):
-    return HttpResponse('Login Page (NOT FINISHED)')
+#################################
+#       USER AUTHENTICATION     #
+#################################
 
-''' LOGOUT VIEW '''
-def logout(request):
-    return HttpResponse('Logout Page (NOT FINISHED)')
+# Registers a user and gives them a role
+def registerPage(request):
+    
+    form = CreateUserForm()
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid:
+            user = form.save()
+            username = form.cleaned_data.get('username')
+
+            if 'teamLead':
+                group = Group.objects.get(name='team_lead')
+                user.groups.add(group)
+                teamLead = TeamLead.objects.create(user=user)
+                teamLead.save()
+            else:
+                group = Group.objects.get(name='team_member')
+                user.groups.add(group)
+                teamMember = TeamMember.objects.create(user=user)
+                teamMember.save()
+
+            messages.success(request, 'Account was created for ' + username)
+            return redirect('login')
+    
+    context = {'form':form}
+    return render(request, 'registration/register.html', context)
+
+

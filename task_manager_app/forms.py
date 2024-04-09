@@ -1,8 +1,8 @@
 from django import forms
-from django.forms import ModelForm
 from .models import *
-from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 # What is a form forms?
 """ 
@@ -31,3 +31,12 @@ class TaskForm(ModelForm):
         model = Task
         fields = ['title', 'description', 'due_date', 'completion_stage', 'assignee']
         template_name = 'task_update.html'
+
+###################################################################################################
+#                                       USER AUTHENTICATION                                       #
+###################################################################################################
+
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
