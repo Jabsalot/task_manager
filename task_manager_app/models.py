@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class TeamLead(models.Model):
     name = models.CharField(max_length=200)
 
-    # Connects TeamLead model to django user model
+    # Relational 
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -15,7 +15,8 @@ class TeamLead(models.Model):
 ''' Team Model '''
 class Team(models.Model):
     name = models.CharField(max_length=200)
-    # One-to-Many Relationship
+    
+    # Relational 
     lead = models.OneToOneField(TeamLead, on_delete=models.SET_NULL, null=True, related_name='teams')
 
     def __str__(self):
@@ -24,7 +25,10 @@ class Team(models.Model):
 ''' Team Member Model '''
 class TeamMember(models.Model):
     name = models.CharField(max_length=200)
+    
+    # Relational 
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='members')
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

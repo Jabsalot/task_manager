@@ -11,6 +11,10 @@ urlpatterns = [
     path('tasks/<int:pk>/delete_task/', views.TaskDeleteView.as_view(), name = 'task-delete'),
     path('tasks/create_task', views.TaskCreateView.as_view(), name = 'task-create'),
 
+    # SET UP ROLE
+    path('create_team/', views.createTeamPage, name = 'create-team-page'),
+    path('join_team/', views.joinTeamPage, name = 'join-team-page'),
+
     # USER ACCOUNTS AND AUTHENTICATION
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/', views.registerPage, name = 'register-page'),

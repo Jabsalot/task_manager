@@ -32,6 +32,16 @@ class TaskForm(ModelForm):
         fields = ['title', 'description', 'due_date', 'completion_stage', 'assignee']
         template_name = 'task_update.html'
 
+# Creates a team 
+class CreateTeamForm(forms.Form):
+    
+    team_name = forms.CharField(max_length=100, required=True)
+
+# Adds someone to team
+class JoinTeamForm(forms.Form):
+    
+    team_name = forms.CharField(max_length=100, required=True)
+
 ###################################################################################################
 #                                       USER AUTHENTICATION                                       #
 ###################################################################################################

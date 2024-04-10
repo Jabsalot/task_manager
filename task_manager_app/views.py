@@ -51,10 +51,81 @@ def index(request):
     return render(request, 'task_manager_app/index.html')
 
 #################################
+#     TEAM ORIENTED METHODS     #
+#################################
+
+# Creates a team and sets user as team lead for team created
+def createTeamPage(request):
+
+    form = CreateTeamForm()
+
+    if request.method == 'POST':
+        form = CreateTeamForm(request.POST)
+        if form.is_valid:
+            team_name = form['team_name'].value()
+            team_exists = Team.objects.filter(name=team_name).exists()
+            
+            if not team_exists:
+                user = request.user
+                user_name = request.user.username
+                group = Group.objects.get(name='Team Lead')
+                user.groups.add(group)
+
+                # Create TeamLead object
+                team_lead = TeamLead.objects.create(name=user_name, user=user)
+                team_lead.save()
+
+                # Create Team object
+                team = Team.objects.create(name=team_name, lead=team_lead)
+                team.save()
+
+                messages.success(request, 'Successfully create team: ' + team_name)
+                # Redirect to team page
+                return redirect('index')
+            else:
+                error_message = "The team '{}' already exists. Please choose a different name.".format(team_name)
+                return render(request, 'task_manager_app/create_team.html', {'form': form, 'error_message': error_message})
+
+            
+    context = {'form':form}
+    return render(request, 'task_manager_app/create_team.html', context)
+
+# Register a user to a team and give them a role
+def joinTeamPage(request):
+
+    form = JoinTeamForm()
+
+    if request.method == 'POST':
+        form = JoinTeamForm(request.POST)
+        if form.is_valid:
+            team_name = form['team_name'].value()
+            team_exists = Team.objects.filter(name=team_name).exists()
+
+            if team_exists:
+                user = request.user
+                user_name = request.user.username
+                group = Group.objects.get(name='Team Member')
+                user.groups.add(group)
+            
+                teamObj = Team.objects.get(name=team_name)
+                team_member = TeamMember.objects.create(name=user_name, team=teamObj, user=user)
+                team_member.save()
+
+                messages.success(request, 'Successfully added to: ' + team_name)
+                # Redirect to team page
+                return redirect('index')
+            else:
+                error_message = "The team '{}' does not exist. Please try again.".format(team_name)
+                return render(request, 'task_manager_app/join_team.html', {'form': form, 'error_message': error_message})
+
+    context = {'form':form}
+    return render(request, 'task_manager_app/join_team.html', context)
+
+#################################
 #       USER AUTHENTICATION     #
 #################################
 
-# Registers a user and gives them a role
+# Registers a user to the database
 def registerPage(request):
     
     form = CreateUserForm()
@@ -62,24 +133,11 @@ def registerPage(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid:
-            user = form.save()
+            form.save()
             username = form.cleaned_data.get('username')
-
-            if 'teamLead':
-                group = Group.objects.get(name='team_lead')
-                user.groups.add(group)
-                teamLead = TeamLead.objects.create(user=user)
-                teamLead.save()
-            else:
-                group = Group.objects.get(name='team_member')
-                user.groups.add(group)
-                teamMember = TeamMember.objects.create(user=user)
-                teamMember.save()
 
             messages.success(request, 'Account was created for ' + username)
             return redirect('login')
     
     context = {'form':form}
     return render(request, 'registration/register.html', context)
-
-
