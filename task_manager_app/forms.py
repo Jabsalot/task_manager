@@ -24,14 +24,6 @@ from django.contrib.auth.forms import UserCreationForm
 #       2. Creating HTML forms for the data
 #       3. Receiving and processing submitted forms and data from the client
 
-class TaskForm(ModelForm):
-    due_date = forms.DateField(input_formats=['%Y-%m-%d'], widget=forms.DateInput(attrs={'type': 'date'}))
-
-    class Meta:
-        model = Task
-        fields = ['title', 'description', 'due_date', 'completion_stage', 'assignee']
-        template_name = 'task_update.html'
-
 # Creates a team 
 class CreateTeamForm(forms.Form):
     
@@ -41,6 +33,27 @@ class CreateTeamForm(forms.Form):
 class JoinTeamForm(forms.Form):
     
     team_name = forms.CharField(max_length=100, required=True)
+
+###################################################################################################
+#                                             TASKS                                               #
+###################################################################################################
+
+class TaskForm(ModelForm):
+    due_date = forms.DateField(input_formats=['%Y-%m-%d'], widget=forms.DateInput(attrs={'type': 'date'}))
+
+    class Meta:
+        model = Task
+        fields = ['title', 'description', 'due_date', 'completion_stage', 'assignee']
+        template_name = 'task_update.html'
+
+# This form allows a team member to change a tasks status
+# This form is connected with:
+#   1. getTaskInfo view
+#   1. team_member_page.html
+class ChangeCompletionStatusForm(ModelForm):
+    class Meta:
+        model = Task
+        fields = ['completion_stage']
 
 ###################################################################################################
 #                                       USER AUTHENTICATION                                       #

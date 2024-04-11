@@ -94,9 +94,9 @@
             <!-- Show Tasks or give option to make or join a team -->
             {% if user.is_authenticated %}
               {% if user.groups.all.0.name == 'Team Lead'%}
-                <a class="navbar-link" href="{% url 'task-list' %}">Tasks</a>
+                <a class="navbar-link" href="{% url 'team-lead-page' %}">Team</a>
               {% elif user.groups.all.0.name == 'Team Member' %}
-                <a class="navbar-link" href="{% url 'task-list' %}">Tasks</a>
+                <a class="navbar-link" href="{% url 'team-member-page' %}">Team</a>
               {% else %}
                 <a class="navbar-link" href="{% url 'create-team-page' %}">Create Team</a>
                 <a class="navbar-link" href="{% url 'join-team-page' %}">Join Team</a>

@@ -40,15 +40,36 @@ class TaskCreateView(generic.CreateView):
     ''' Use form_class instead of fields to insure that due_date has a proper widget '''
     form_class = TaskForm
     template_name = 'task_manager_app/task_create.html'
-    success_url = reverse_lazy('task-list')
+    success_url = reverse_lazy('team-member-tasks')
 
 ###########################################################
 #                   FUNCTION BASED MODELS                 #
 ###########################################################
 
+
 ''' HOME PAGE VIEW '''
 def index(request):
     return render(request, 'task_manager_app/index.html')
+
+#################################
+#     TASK ORIENTED METHODS     #
+#################################
+
+# Allows a user to create a project
+def createTask(request, team_member_id):
+    # Create a new dictionary 
+    form = TaskForm()
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid:
+            project = form.save()
+            project.save()
+
+            id = team_member_id
+            return redirect(getTeamMemberTasks, team_member_id=id)
+    context = {'form': form}
+    return render(request, 'task_manager_app/task_create.html', context)
 
 #################################
 #     TEAM ORIENTED METHODS     #
@@ -120,6 +141,97 @@ def joinTeamPage(request):
 
     context = {'form':form}
     return render(request, 'task_manager_app/join_team.html', context)
+
+# Queries needed data from database for the currect user(team lead) trying to access team page
+def teamLeadPage(request):
+    # Grab team ID
+    user_id = request.user.id
+    team_lead = TeamLead.objects.filter(user_id=user_id).get()
+    team = Team.objects.filter(lead_id=team_lead.id).get()
+
+    # Grab all team member objects for specified team
+    team_members = TeamMember.objects.filter(team_id=team.id)
+
+    context = {
+        'team': team,
+        'team_members': team_members,
+    }
+    return render(request, 'task_manager_app/team_lead_page.html', context)
+
+# Grabs tasks related to team member selected
+def getTeamMemberTasks(request, team_member_id):
+    # Grab team ID
+    user_id = request.user.id
+    team_lead = TeamLead.objects.filter(user_id=user_id).get()
+    team = Team.objects.filter(lead_id=team_lead.id).get()
+
+    # Grab all team member objects for specified team
+    team_members = TeamMember.objects.filter(team_id=team.id)
+    # Grab user(team member) clicked on
+    member = TeamMember.objects.get(id=team_member_id)
+    # Grab all tasks related to user(team member)
+    tasks = Task.objects.filter(assignee_id=team_member_id)
+    
+    context = {'team' : team,
+               'team_members' : team_members,
+               'selected_member' : member,
+               'selected_tasks' : tasks}
+    return render(request, 'task_manager_app/team_lead_page.html', context)
+
+# Queries needed data from database for the currect user(team member) trying to access team page
+def teamMemberPage(request):
+    # Grab team member id
+    user_id = request.user.id
+    team_member = TeamMember.objects.get(user_id=user_id)
+
+    # Grab all tasks related to user(team member)
+    tasks = Task.objects.filter(assignee_id=team_member.id)
+
+    context = {
+        'tasks' : tasks,
+    }
+
+    return render(request, 'task_manager_app/team_member_page.html', context)
+
+# Grabs task data related to which task was selected
+def getTaskInfo(request, task_id):
+    # Grab team member id
+    user_id = request.user.id
+    team_member = TeamMember.objects.get(user_id=user_id)
+
+    # Grab all tasks related to user(team member)
+    tasks = Task.objects.filter(assignee_id=team_member.id)
+
+    # Grab specific task information
+    task = Task.objects.get(id=task_id)
+    title = task.title
+    description = task.description
+    due_date = task.due_date
+    completion_stage = task.completion_stage
+
+    form = ChangeCompletionStatusForm()
+
+    if request.method == 'POST':
+        form = ChangeCompletionStatusForm(request.POST, instance=task)
+        if form.is_valid():
+            task.save()
+    else:
+        form = ChangeCompletionStatusForm(instance=task)
+
+    context = {
+        'form' : form,
+        'tasks' : tasks,
+        'task' : task,
+        'title' : title,
+        'description' : description,
+        'due_date' : due_date,
+        'completion_stage' : completion_stage,
+        'selected_task' : task,
+        'selected_tasks' : tasks,
+    }
+
+    return render(request, 'task_manager_app/team_member_page.html', context)
+
 
 #################################
 #       USER AUTHENTICATION     #

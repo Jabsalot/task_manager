@@ -1,0 +1,156 @@
+{% extends "task_manager_app/base_template.html" %}
+
+{% block content %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Team Page</title>
+        <style>
+            .container {
+                display: flex;
+                justify-content: center; /* Center the containers horizontally */
+                margin-top: 50px; /* Add space above the containers */
+            }            
+            
+            .left-container,
+            .right-container {
+                width: 400px; /* Set a specific width for the containers */
+                height: 400px;
+                margin: 20px; /* Add margin to create space around the containers */
+                border: 1px solid #ccc;
+                padding: 10px;
+                overflow-y: auto; /* Scrollbar for vertical overflow */
+            }
+
+            .left-container {
+                margin-right: 10px; /* Adjust the margin between containers */
+            }
+            
+            .right-container {
+                margin-left: 10px; /* Adjust the margin between containers */
+                display: flex;
+                flex-direction: column; /* Align items vertically */
+                justify-content: flex-start; /* Align items to the start of the container */
+            }
+
+            
+            .task-section {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+                justify-content: flex-start; /* Align items to the start of the container */
+            }
+            
+            .task-name {
+                flex: 1;
+                margin-right: 10px;
+            }
+            
+            .due-date {
+                margin-right: 10px;
+            }
+
+
+            .status-box {
+                width: 15px;
+                height: 15px;
+                display: inline-block;
+                border-radius: 50%;
+                margin-right: 5px;
+            }
+
+            .not-started {
+                background-color: red;
+            }
+            
+            .working-on {
+                background-color: yellow;
+            }
+            
+            .completed {
+                background-color: green;
+            }
+
+
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+                margin-right: 10px;
+                transition: background-color 0.3s;
+              }
+              .button-layout {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  margin-top: 20px;
+              }
+              .btn:hover {
+                background-color: #0056b3;
+              }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+
+            <!-- Display Team Members -->
+
+            <div class="left-container">
+                <h2>Team Members</h2>
+                <ul>
+                    {% for member in team_members %}
+                        <li><a href="{% url 'team-member-tasks' member.id %}">{{ member.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Display specific team member tasks with due dates and completion stages -->
+
+            <div class="right-container">
+                <h2>Tasks</h2>
+                    {% if selected_tasks %}
+                        <ul>
+                            <!-- Displays each task with due date and completion stage -->
+                            {% for task in selected_tasks %}
+                                <div class="task-section">
+                                    <p class="task-name">{{ task }}</p>
+                                    <p class="due-date">Due Date: {{ task.due_date }}</p>
+                                    <span class="status-box 
+                                        {% if task.completion_stage == 'Not Started' %}
+                                            not-started            
+                                        {% elif task.completion_stage == 'Working On' %}  
+                                            working-on
+                                        {% elif task.completion_stage == 'Completed' %}
+                                            completed
+                                        {% endif %}">
+                                    </span>
+                                </div>
+                            {% endfor %}
+                        </ul>
+
+                        <!-- Button for creating a task -->
+                        <a href="{% url 'task-create-page' selected_member.id %}">
+                            <button class="btn">New Task</button>
+                        </a>
+                    {% elif selected_member %}
+                        <p>No tasks found for {{ selected_member.name }}.</p>
+                        <!-- Button for creating a task -->
+                        <a href="{% url 'task-create-page' selected_member.id  %}">
+                            <button class="btn">New Task</button>
+                        </a>
+                    {% else %}
+                        <p>Please select a team member.</p>
+                    {% endif %}
+            </div>
+        </div>
+    </body>
+    </html>
+
+{% endblock %}
