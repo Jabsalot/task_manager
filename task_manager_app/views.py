@@ -48,6 +48,7 @@ class TaskCreateView(generic.CreateView):
 
 
 ''' HOME PAGE VIEW '''
+# Simple view that redirect back to the home page
 def index(request):
     return render(request, 'task_manager_app/index.html')
 
@@ -55,6 +56,7 @@ def index(request):
 #     TASK ORIENTED METHODS     #
 #################################
 
+""" View Function Used In: team_lead_page.html"""
 # Allows a user to create a task
 def createTask(request, team_member_id):
     form = TaskForm()
@@ -67,6 +69,14 @@ def createTask(request, team_member_id):
 
             id = team_member_id
             return redirect(getTeamMemberTasks, team_member_id=id)
+        
+    # Filters team members to specific team
+    team_member = TeamMember.objects.get(id=team_member_id)
+    team_members = TeamMember.objects.filter(team_id=team_member.team_id)
+
+    # Adjusting the queryset for the assignee field in the form
+    form.fields['assignee'].queryset = team_members
+
     context = {'form': form}
     return render(request, 'task_manager_app/task_create.html', context)
 
@@ -141,6 +151,7 @@ def joinTeamPage(request):
     context = {'form':form}
     return render(request, 'task_manager_app/join_team.html', context)
 
+""" View Function Used In: base_template.html"""
 # Queries needed data from database for the currect user(team lead) trying to access team page
 def teamLeadPage(request):
     # Grab team ID
@@ -157,6 +168,7 @@ def teamLeadPage(request):
     }
     return render(request, 'task_manager_app/team_lead_page.html', context)
 
+""" View Function Used In: team_lead_page.html"""
 # Grabs tasks related to team member selected
 def getTeamMemberTasks(request, team_member_id):
     # Grab team ID
@@ -177,6 +189,7 @@ def getTeamMemberTasks(request, team_member_id):
                'selected_tasks' : tasks}
     return render(request, 'task_manager_app/team_lead_page.html', context)
 
+""" View Function Used In: base_template.html"""
 # Queries needed data from database for the currect user(team member) trying to access team page
 def teamMemberPage(request):
     # Grab team member id
@@ -192,6 +205,7 @@ def teamMemberPage(request):
 
     return render(request, 'task_manager_app/team_member_page.html', context)
 
+""" View Function Used In: team_member_page.html"""
 # Grabs task data related to which task was selected
 def getTaskInfo(request, task_id):
     # Grab team member id
@@ -239,6 +253,7 @@ def getTaskInfo(request, task_id):
 #       USER AUTHENTICATION     #
 #################################
 
+""" View Function Used In: base_template.html"""
 # Registers a user to the database
 def registerPage(request):
     
@@ -246,7 +261,7 @@ def registerPage(request):
 
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
 

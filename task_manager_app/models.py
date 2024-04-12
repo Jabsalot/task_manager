@@ -41,6 +41,7 @@ class Task(models.Model):
     completion_stage = models.CharField(max_length=200, choices=[('Not Started', 'Not Started'),
                                                                  ('Working On', 'Working On'),
                                                                  ('Completed', 'Completed')], blank=True)
+    email_sent = models.BooleanField(blank=True, default=False)
     ''' 
         One-to-Many Relationship 
         Each Task has a ForeignKey relationship with TeamMember 
