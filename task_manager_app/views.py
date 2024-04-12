@@ -55,9 +55,8 @@ def index(request):
 #     TASK ORIENTED METHODS     #
 #################################
 
-# Allows a user to create a project
+# Allows a user to create a task
 def createTask(request, team_member_id):
-    # Create a new dictionary 
     form = TaskForm()
 
     if request.method == 'POST':
@@ -215,6 +214,9 @@ def getTaskInfo(request, task_id):
         form = ChangeCompletionStatusForm(request.POST, instance=task)
         if form.is_valid():
             task.save()
+
+            task_name = task.title
+            messages.success(request, 'Successfully updated task: ' + task_name)
     else:
         form = ChangeCompletionStatusForm(instance=task)
 

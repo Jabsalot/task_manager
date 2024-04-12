@@ -23,8 +23,7 @@ urlpatterns = [
     # TEAM MEMBER PATHS
     path('team_member', views.teamMemberPage, name = 'team-member-page'),
     path('team_member/<int:task_id>/', views.getTaskInfo, name = 'team-member-task-info'),
-    # TEAM MEMBER PATHS
-
+   
     # USER ACCOUNTS AND AUTHENTICATION
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/', views.registerPage, name = 'register-page'),

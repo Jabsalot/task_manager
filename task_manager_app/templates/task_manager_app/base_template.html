@@ -30,17 +30,28 @@
       display: flex;
       align-items: center;
     }
+
     .navbar-link {
+        color: #f2f2f2;
+        text-decoration: none;
+        padding: 10px 20px;
+        font-family: "Crimson Text", serif;
+        font-size: 22px;
+    }
+
+    .navbar-link:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .navbar-username {
       color: #f2f2f2;
       text-decoration: none;
       padding: 10px 20px;
       font-family: "Crimson Text", serif;
       font-size: 22px;
-    }
-    .navbar-link:hover {
-      background-color: #ddd;
-      color: black;
-    }
+    } 
+
 
     .container-left {
       max-width: 800px;
@@ -91,7 +102,7 @@
             <a class="navbar-link" href="{% url 'index' %}">Home</a>
             <a class="navbar-link" href="#">About</a>
 
-            <!-- Show Tasks or give option to make or join a team -->
+            <!-- Give option to (make or join a team) or (view users team view) -->
             {% if user.is_authenticated %}
               {% if user.groups.all.0.name == 'Team Lead'%}
                 <a class="navbar-link" href="{% url 'team-lead-page' %}">Team</a>
@@ -103,9 +114,9 @@
               {% endif %}
             {% endif %}
 
-            <!-- Show login or logout and register -->
+            <!-- Show (login and register) or (username and logout) -->
             {% if user.is_authenticated %}
-            <p class="navbar-username">{{ user.username }}</p>
+              <a class="navbar-username">{{ user.username }}</a>
               <a class="navbar-link" href="{% url 'logout' %}">Logout</a>
             {% else %}
               <a class="navbar-link" href="{% url 'login' %}">Login</a>
