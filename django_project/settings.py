@@ -140,9 +140,9 @@ LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # SMTP server address
-EMAIL_PORT = 587  # SMTP port (typically 587 for TLS/STARTTLS or 465 for SSL)
-EMAIL_HOST_USER = '@gmail.com'  # SMTP username (if required)
-EMAIL_HOST_PASSWORD = ''  # SMTP password (if required)
-EMAIL_USE_TLS = True  # Use TLS/STARTTLS for secure connections
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_HOST = 'smtp.gmail.com'  # SMTP server address
+#EMAIL_PORT = 587  # SMTP port (typically 587 for TLS/STARTTLS or 465 for SSL)
+#EMAIL_HOST_USER = '@gmail.com'  # SMTP username (if required)
+#EMAIL_HOST_PASSWORD = ''  # SMTP password (if required)
+#EMAIL_USE_TLS = True  # Use TLS/STARTTLS for secure connections
