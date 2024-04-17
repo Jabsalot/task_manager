@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
+from .secure import email, password
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,8 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+   
     # Add application here
     'task_manager_app',
+    'django_celery_results',
+    'django_celery_beat',
 ]
 
 # Add support for authenticating users
@@ -139,10 +144,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Email settings
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_HOST = 'smtp.gmail.com'  # SMTP server address
-#EMAIL_PORT = 587  # SMTP port (typically 587 for TLS/STARTTLS or 465 for SSL)
-#EMAIL_HOST_USER = '@gmail.com'  # SMTP username (if required)
-#EMAIL_HOST_PASSWORD = ''  # SMTP password (if required)
-#EMAIL_USE_TLS = True  # Use TLS/STARTTLS for secure connections
+# CELERY SETTINGS
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_RESULT_BACKEND = 'django-db'
+
+# CELERY BEAT SETTINGS
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# SMTP EMAIL SETTINGS
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # SMTP server address
+EMAIL_PORT = 587  # SMTP port (typically 587 for TLS/STARTTLS or 465 for SSL)
+EMAIL_HOST_USER = email  # SMTP username (if required)
+EMAIL_HOST_PASSWORD = password  # SMTP password (if required)
+EMAIL_USE_TLS = True  # Use TLS/STARTTLS for secure connections
