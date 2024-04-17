@@ -1,6 +1,50 @@
 {% extends "task_manager_app/base_template.html" %}
 
 {% block content %}
+
+    <style>
+
+        .container-left {
+            max-width: 800px;
+            margin-left: 0px;
+            margin-bottom: 20px;
+            border: 1px solid black;
+            text-align: left;
+            padding: 20px;
+          }
+          .container-middle {
+              max-width: 800px;
+              margin: 50px auto;
+              text-align: center;
+          }
+          .container-right {
+              max-width: 800px;
+              margin: 50px auto;
+              text-align: right;
+          }
+      
+          .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+          }
+          .button-layout {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-top: 20px;
+          }
+          .btn:hover {
+            background-color: #0056b3;
+          }
+
+    </style>
+
     <h1>Task List</h1>
     {% if task_list %}
         <ul>

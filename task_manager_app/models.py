@@ -1,9 +1,13 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 ''' Team Lead Model '''
 class TeamLead(models.Model):
     name = models.CharField(max_length=200)
+
+    # Relational 
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -11,7 +15,8 @@ class TeamLead(models.Model):
 ''' Team Model '''
 class Team(models.Model):
     name = models.CharField(max_length=200)
-    # One-to-Many Relationship
+    
+    # Relational 
     lead = models.OneToOneField(TeamLead, on_delete=models.SET_NULL, null=True, related_name='teams')
 
     def __str__(self):
@@ -20,7 +25,10 @@ class Team(models.Model):
 ''' Team Member Model '''
 class TeamMember(models.Model):
     name = models.CharField(max_length=200)
+    
+    # Relational 
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='members')
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -33,6 +41,7 @@ class Task(models.Model):
     completion_stage = models.CharField(max_length=200, choices=[('Not Started', 'Not Started'),
                                                                  ('Working On', 'Working On'),
                                                                  ('Completed', 'Completed')], blank=True)
+    email_sent = models.BooleanField(blank=True, default=False)
     ''' 
         One-to-Many Relationship 
         Each Task has a ForeignKey relationship with TeamMember 

@@ -1,0 +1,104 @@
+{% extends "task_manager_app/base_template.html" %}
+
+{% block content %}
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Team Page</title>
+        <style>
+                .container {
+                display: flex;
+                justify-content: center; /* Center the containers horizontally */
+                margin-top: 50px; /* Add space above the containers */
+                }            
+                
+                .left-container,
+                .right-container {
+                width: 400px; /* Set a specific width for the containers */
+                height: 400px;
+                margin: 20px; /* Add margin to create space around the containers */
+                border: 1px solid #ccc;
+                padding: 10px;
+                overflow-y: auto; /* Scrollbar for vertical overflow */
+                }
+
+                .left-container {
+                margin-right: 10px; /* Adjust the margin between containers */
+                }
+                
+                .right-container {
+                margin-left: 10px; /* Adjust the margin between containers */
+                display: flex;
+                flex-direction: column; /* Align items vertically */
+                justify-content: flex-start; /* Align items to the start of the container */
+                }
+
+
+                .form-container form p {
+                font-weight: bold;
+                }
+
+                .form-container form p,
+                .form-container form button {
+                    display: inline-block;
+                    vertical-align: middle; /* Align elements vertically */
+                    margin-right: 10px; /* Add some space between elements */
+                }
+                </style>
+        </head>
+
+        <body>
+                <div class="container">
+        
+                    <!-- Display Team Members Tasks -->
+        
+                    <div class="left-container">
+                        <h2>Tasks</h2>
+                                <ul>
+                                        {% for task in tasks %}
+                                                <li><a href="{% url 'team-member-task-info' task.id %}"> {{ task }}</a></li>
+                                        {% endfor %}
+                                </ul>
+                    </div>
+        
+                    <!-- Display specific team member tasks with due dates and completion stages -->
+        
+                    <div class="right-container">
+                        <h2>Task Description</h2>
+                                {% if selected_task %}
+                                        <h3>{{ selected_task }}</h3>
+                                        <p><strong>Description:</strong> {{ selected_task.description }}</p>
+                                        <p><strong>Due Date:</strong> {{ selected_task.due_date }}</p>
+                                        <div class="form-container">
+                                                <form method="post">
+                                                        {% csrf_token %}
+                                                        {{ form.as_p }}
+                                                        {{ form.field_to_monitor }}
+                                                        <button type="submit">Update</button>
+                                                </form>
+                                        </div>
+                                {% elif selected_tasks %}
+                                        <p>You have no tasks to complete.</p>
+                                {% else %}
+                                        <p>Please select a task.</p>
+                                {% endif %}
+                    </div>
+        </body>
+        </html>
+
+    <!-- On Left Hand Side Of Screen -->
+    <!--
+            1. Store taks (should be clickable to populate right hand side of screen)
+            2. Store colored indicator next to task
+    -->
+
+    <!-- On Right Hand Side Of Screen -->
+    <!--
+            1. Stores information about the task clicked
+            2. Button that allows member to update task
+    -->
+
+{% endblock %}
