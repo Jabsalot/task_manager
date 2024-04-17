@@ -15,7 +15,8 @@ app.conf.beat_schedule = {
     'send-overdue-task-emails-daily': {
         'task': 'task_manager_app.tasks.sendOverdueTaskEmails',
         'schedule': crontab(minute='*/1'),
-        # args : (2, )
+        # 'schedule': crontab(hours='*/12'),
+        # 'args' : (2, )
     },
 }
 
