@@ -135,16 +135,23 @@
                             {% endfor %}
                         </ul>
 
-                        <!-- Button for creating a task -->
-                        <a href="{% url 'task-create-page' selected_member.id %}">
-                            <button class="btn">New Task</button>
-                        </a>
+                        <!-- Button container -->
+                        <div class="button-layout">
+                            <!-- Button for creating a task -->
+                            <a href="{% url 'task-create-page' selected_member.id %}">
+                                <button class="btn">New Task</button>
+                            </a>
+                        </div>
+
                     {% elif selected_member %}
                         <p>No tasks found for {{ selected_member.name }}.</p>
-                        <!-- Button for creating a task -->
-                        <a href="{% url 'task-create-page' selected_member.id  %}">
-                            <button class="btn">New Task</button>
-                        </a>
+                        <!-- Button container -->
+                        <div class="button-layout">
+                            <!-- Button for creating a task -->
+                            <a href="{% url 'task-create-page' selected_member.id %}">
+                                <button class="btn">New Task</button>
+                            </a>
+                        </div>
                     {% else %}
                         <p>Please select a team member.</p>
                     {% endif %}
