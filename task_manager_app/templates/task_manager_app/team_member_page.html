@@ -1,6 +1,7 @@
 {% extends "task_manager_app/base_template.html" %}
 
 {% block content %}
+{% load static %}
 
         <!DOCTYPE html>
         <html lang="en">
@@ -10,37 +11,69 @@
         <title>Team Page</title>
         <style>
                 .container {
-                display: flex;
-                justify-content: center; /* Center the containers horizontally */
-                margin-top: 50px; /* Add space above the containers */
+                        display: flex;
+                        justify-content: center; /* Center the containers horizontally */
+                        margin-top: 50px; /* Add space above the containers */
                 }            
                 
                 .left-container,
                 .right-container {
-                width: 400px; /* Set a specific width for the containers */
-                height: 400px;
-                margin: 20px; /* Add margin to create space around the containers */
-                border: 1px solid #ccc;
-                padding: 10px;
-                overflow-y: auto; /* Scrollbar for vertical overflow */
+                        width: 400px; /* Set a specific width for the containers */
+                        height: 400px;
+                        margin: 20px; /* Add margin to create space around the containers */
+                        border: 1px solid #ccc;
+                        padding: 10px;
+                        overflow-y: auto; /* Scrollbar for vertical overflow */
+
+                        border-radius: 10px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                .left-container {
+        
+                }
+                .right-container {
+                        margin-left: 10px; /* Adjust the margin between containers */
+                        display: flex;
+                        flex-direction: column; /* Align items vertically */
+                        justify-content: flex-start; /* Align items to the start of the container */
                 }
 
-                .left-container {
-                margin-right: 10px; /* Adjust the margin between containers */
+
+                /* Add some spacing between tasks */
+                .left-container .task-list li {
+                    margin-bottom: 15px;
                 }
-                
-                .right-container {
-                margin-left: 10px; /* Adjust the margin between containers */
-                display: flex;
-                flex-direction: column; /* Align items vertically */
-                justify-content: flex-start; /* Align items to the start of the container */
+                /* Style for selected task */
+                .left-container .task-link.selected {
+                    background-color: #e6f7ff; /* Change to your desired highlight color */
+                }
+                /* Hover effect for tasks */
+                .left-container .task-link {
+                    color: black;
+                    text-decoration: none;
+                    padding: 5px 10px;
+                    font-family: "Crimson Text", serif;
+                    font-size: 20px;
+                }
+                .left-container .task-link:hover {
+                    background-color: #ddd;
+                    color: black;
+                }
+                /* Style for task links */
+                .left-container .task-list .task-link {
+                cursor: pointer; /* Change cursor to pointer when hovering over task links */
+                transition: background-color 0.5s; /* Smooth transition for background color change */
+                }
+                /* Style for clicked task */
+                .left-container .task-list .task-link.clicked {
+                background-color: #f0f0f0; /* Change background color for clicked task */
+                text-decoration: underline; /* Optionally, underline the clicked task */
                 }
 
 
                 .form-container form p {
-                font-weight: bold;
+                
                 }
-
                 .form-container form p,
                 .form-container form button {
                     display: inline-block;
@@ -52,22 +85,19 @@
 
         <body>
                 <div class="container">
-        
-                    <!-- Display Team Members Tasks -->
-        
-                    <div class="left-container">
-                        <h2>Tasks</h2>
-                                <ul>
+                <!-- Display Team Members Tasks -->
+                <div class="left-container">
+                        <h2 style="text-align: center">Tasks</h2>
+                                <ul class="task-list" style="list-style-type: none;">
                                         {% for task in tasks %}
-                                                <li><a href="{% url 'team-member-task-info' task.id %}"> {{ task }}</a></li>
+                                                <li><a href="{% url 'team-member-task-info' task.id %}" class="task-link"> {{ task }} </a></li>
                                         {% endfor %}
                                 </ul>
-                    </div>
-        
-                    <!-- Display specific team member tasks with due dates and completion stages -->
-        
-                    <div class="right-container">
-                        <h2>Task Description</h2>
+                </div>
+
+                <!-- Display specific team member tasks with due dates and completion stages -->
+                <div class="right-container">
+                        <h2 style="text-align: center">Task Description</h2>
                                 {% if selected_task %}
                                         <h3>{{ selected_task }}</h3>
                                         <p><strong>Description:</strong> {{ selected_task.description }}</p>
@@ -80,25 +110,12 @@
                                                         <button type="submit">Update</button>
                                                 </form>
                                         </div>
-                                {% elif selected_tasks %}
-                                        <p>You have no tasks to complete.</p>
+                                {% elif not selected_tasks %}
+                                        <p style="text-align: center">You have no tasks to complete.</p>
                                 {% else %}
-                                        <p>Please select a task.</p>
+                                        <p style="text-align: center">Please select a task.</p>
                                 {% endif %}
-                    </div>
+                </div>
         </body>
         </html>
-
-    <!-- On Left Hand Side Of Screen -->
-    <!--
-            1. Store taks (should be clickable to populate right hand side of screen)
-            2. Store colored indicator next to task
-    -->
-
-    <!-- On Right Hand Side Of Screen -->
-    <!--
-            1. Stores information about the task clicked
-            2. Button that allows member to update task
-    -->
-
 {% endblock %}

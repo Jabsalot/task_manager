@@ -4,12 +4,6 @@ from django.utils import timezone
 from .models import Task
 from django.conf import settings
 
-@shared_task(bind=True)
-def test_func(self):
-    for i in range(10):
-        print(i)
-    return "Done"
-
 @shared_task()
 def sendOverdueTaskEmails():
     print('TASKS BEING CHECKED FOR OVERDUE STATUS')
@@ -29,7 +23,7 @@ def sendOverdueTaskEmails():
 
         # Send email to team lead
         subject = 'Task Overdue: {}'.format(task.title)
-        message = 'The task "{}" assigned to {} is overdue'.format(task.title, task.assignee.name)
+        message = 'The task "{}" assigned to {} is overdue. Task was due on {}'.format(task.title, task.assignee.name, task.due_date)
         from_email = settings.EMAIL_HOST_USER
         recipient_list = [team_lead_email]
         send_mail(subject, message, from_email, recipient_list, fail_silently=False)

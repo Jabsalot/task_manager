@@ -1,6 +1,7 @@
 {% extends "task_manager_app/base_template.html" %}
 
 {% block content %}
+{% load static %}
 
     <!DOCTYPE html>
     <html lang="en">
@@ -14,26 +15,58 @@
                 justify-content: center; /* Center the containers horizontally */
                 margin-top: 50px; /* Add space above the containers */
             }            
-            
             .left-container,
             .right-container {
-                width: 400px; /* Set a specific width for the containers */
                 height: 400px;
                 margin: 20px; /* Add margin to create space around the containers */
                 border: 1px solid #ccc;
                 padding: 10px;
                 overflow-y: auto; /* Scrollbar for vertical overflow */
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
-
             .left-container {
+                width: 400px; /* Set a specific width for the containers */
                 margin-right: 10px; /* Adjust the margin between containers */
             }
-            
             .right-container {
+                width: 600px; /* Set a specific width for the containers */
                 margin-left: 10px; /* Adjust the margin between containers */
                 display: flex;
                 flex-direction: column; /* Align items vertically */
                 justify-content: flex-start; /* Align items to the start of the container */
+            }
+            
+
+            /* Add some spacing between tasks */
+            .left-container .task-list li {
+                margin-bottom: 15px;
+            }
+            /* Style for selected task */
+            .left-container .task-link.selected {
+                background-color: #e6f7ff; /* Change to your desired highlight color */
+            }
+            /* Hover effect for tasks */
+            .left-container .task-link {
+                color: black;
+                text-decoration: none;
+                padding: 5px 10px;
+                font-family: "Crimson Text", serif;
+                font-size: 20px;
+            }
+            .left-container .task-link:hover {
+                background-color: #ddd;
+                color: black;
+            }
+            /* Style for task links */
+            .left-container .task-list .task-link {
+            cursor: pointer; /* Change cursor to pointer when hovering over task links */
+            transition: background-color 0.5s; /* Smooth transition for background color change */
+            }
+            /* Style for clicked task */
+            .left-container .task-list .task-link.clicked {
+            background-color: #f0f0f0; /* Change background color for clicked task */
+            text-decoration: underline; /* Optionally, underline the clicked task */
             }
 
             
@@ -61,15 +94,12 @@
                 border-radius: 50%;
                 margin-right: 5px;
             }
-
             .not-started {
                 background-color: red;
             }
-            
             .working-on {
                 background-color: yellow;
             }
-            
             .completed {
                 background-color: green;
             }
@@ -99,22 +129,19 @@
 
     <body>
         <div class="container">
-
             <!-- Display Team Members -->
-
             <div class="left-container">
-                <h2>Team Members</h2>
-                <ul>
+                <h2 style="text-align: center">Team Members</h2>
+                <ul class="task-list" style="list-style-type: none;">
                     {% for member in team_members %}
-                        <li><a href="{% url 'team-member-tasks' member.id %}">{{ member.name }}</a></li>
+                        <li><a href="{% url 'team-member-tasks' member.id %}" class="task-link">{{ member.name }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
 
             <!-- Display specific team member tasks with due dates and completion stages -->
-
             <div class="right-container">
-                <h2>Tasks</h2>
+                <h2 style="text-align: center">Tasks</h2>
                     {% if selected_tasks %}
                         <ul>
                             <!-- Displays each task with due date and completion stage -->
@@ -135,16 +162,23 @@
                             {% endfor %}
                         </ul>
 
-                        <!-- Button for creating a task -->
-                        <a href="{% url 'task-create-page' selected_member.id %}">
-                            <button class="btn">New Task</button>
-                        </a>
+                        <!-- Button container -->
+                        <div class="button-layout">
+                            <!-- Button for creating a task -->
+                            <a href="{% url 'task-create-page' selected_member.id %}">
+                                <button class="btn">New Task</button>
+                            </a>
+                        </div>
+
                     {% elif selected_member %}
-                        <p>No tasks found for {{ selected_member.name }}.</p>
-                        <!-- Button for creating a task -->
-                        <a href="{% url 'task-create-page' selected_member.id  %}">
-                            <button class="btn">New Task</button>
-                        </a>
+                        <p style="text-align: center">No tasks found for {{ selected_member.name }}.</p>
+                        <!-- Button container -->
+                        <div class="button-layout">
+                            <!-- Button for creating a task -->
+                            <a href="{% url 'task-create-page' selected_member.id %}">
+                                <button class="btn">New Task</button>
+                            </a>
+                        </div>
                     {% else %}
                         <p>Please select a team member.</p>
                     {% endif %}
