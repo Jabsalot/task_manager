@@ -32,7 +32,7 @@ class TaskDeleteView(generic.DeleteView):
     model = Task
     fields = ['title', 'description', 'due_date', 'completion_stage', 'assignee']
     template_name = 'task_manager_app/task_delete.html'
-    success_url = reverse_lazy('task-list')
+    success_url = reverse_lazy('team-member-page')
 
 ''' Creates new view '''
 class TaskCreateView(generic.CreateView):
