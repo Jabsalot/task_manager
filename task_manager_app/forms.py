@@ -40,7 +40,7 @@ class JoinTeamForm(forms.Form):
 ###################################################################################################
 
 class TaskForm(ModelForm):
-    due_date = forms.DateField(input_formats=['%Y-%m-%d'], widget=forms.DateInput(attrs={'type': 'date'}))
+    due_date = forms.DateField(input_formats=['%Y-%m-%d'], widget=forms.DateInput(attrs={'type': 'date'}), required=True)
 
     class Meta:
         model = Task

@@ -40,7 +40,7 @@ class Task(models.Model):
     due_date = models.DateField(blank=False)
     completion_stage = models.CharField(max_length=200, choices=[('Not Started', 'Not Started'),
                                                                  ('Working On', 'Working On'),
-                                                                 ('Completed', 'Completed')], blank=True)
+                                                                 ('Completed', 'Completed')], blank=False)
     email_sent = models.BooleanField(blank=True, default=False)
     ''' 
         One-to-Many Relationship 
