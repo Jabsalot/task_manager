@@ -16,7 +16,7 @@ app.config_from_object(settings, namespace='CELERY')
 app.conf.beat_schedule = {
     'send-overdue-task-emails-daily': {
         'task': 'task_manager_app.tasks.sendOverdueTaskEmails',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(minutes=2),
     },
 }
 
