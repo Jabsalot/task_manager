@@ -12,12 +12,12 @@
 
     </style>
 
-    <p> Are you sure you want to delete task: "{{ task.title }}"?</p>
+    <p> Are you sure you want to remove task: "{{ task.title }}"?</p>
 
     <div class="btn-layout">
 
         <!-- Cancels deletion and reverts back to task-list -->
-        <a href="{% url 'task-list' %}">
+        <a href="{% url 'team-member-page' %}">
             <button class="btn">Cancel</button>
         </a>
 

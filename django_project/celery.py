@@ -5,6 +5,8 @@ from celery import Celery
 from django.conf import settings
 from celery.schedules import crontab
 
+from datetime import timedelta
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_project.settings')
 
 app = Celery('django_project')
@@ -14,9 +16,7 @@ app.config_from_object(settings, namespace='CELERY')
 app.conf.beat_schedule = {
     'send-overdue-task-emails-daily': {
         'task': 'task_manager_app.tasks.sendOverdueTaskEmails',
-        'schedule': crontab(minute='*/1'),
-        # 'schedule': crontab(hours='*/12'),
-        # 'args' : (2, )
+        'schedule': timedelta(minutes=2),
     },
 }
 
